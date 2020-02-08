@@ -18,7 +18,7 @@ public class TestTmall {
   
         try (
                 Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/tmall_ssm?useUnicode=true&characterEncoding=utf8",
-                        "root", "password");
+                        "root", "123456");
                 Statement s = c.createStatement();
         )
         {
