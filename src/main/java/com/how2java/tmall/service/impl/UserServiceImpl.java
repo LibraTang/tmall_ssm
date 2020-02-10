@@ -40,4 +40,13 @@ public class UserServiceImpl implements UserService {
         example.setOrderByClause("id DESC");
         return userMapper.selectByExample(example);
     }
+
+    @Override
+    public boolean isExist(String name) {
+        UserExample example = new UserExample();
+        example.createCriteria().andNameEqualTo(name);
+        if(!userMapper.selectByExample(example).isEmpty())
+            return true;
+        return false;
+    }
 }

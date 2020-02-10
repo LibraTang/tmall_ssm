@@ -11,6 +11,8 @@ import com.how2java.tmall.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -76,6 +78,35 @@ public class ProductServiceImpl implements ProductService {
     public void setFirstProductImage(List<Product> ps) {
         for(Product p : ps) {
             setFirstProductImage(p);
+        }
+    }
+
+    @Override
+    public void fill(Category c) {
+        List<Product> ps = list(c.getId());
+        c.setProducts(ps);
+    }
+
+    @Override
+    public void fill(List<Category> cs) {
+        for(Category c : cs) {
+            fill(c);
+        }
+    }
+
+    @Override
+    public void fillByRow(List<Category> cs) {
+        int productNumberEachRow = 8; //每行显示8个产品
+        for(Category c : cs) {
+            List<Product> ps = c.getProducts();
+            List<List<Product>> productsByRow = new ArrayList<>();
+            for(int i = 0; i < ps.size(); i += productNumberEachRow) {
+                int size = i + productNumberEachRow;
+                size = size > ps.size() ? ps.size() : size; //判断是否超过了该分类的产品数
+                List<Product> productsOfEachRow = ps.subList(i, size); //截取这一行的产品
+                productsByRow.add(productsOfEachRow);
+            }
+            c.setProductsByRow(productsByRow);
         }
     }
 }
