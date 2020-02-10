@@ -2,12 +2,11 @@ package com.how2java.tmall.service.impl;
 
 import com.how2java.tmall.mapper.CategoryMapper;
 import com.how2java.tmall.mapper.ProductMapper;
-import com.how2java.tmall.pojo.Category;
-import com.how2java.tmall.pojo.Product;
-import com.how2java.tmall.pojo.ProductExample;
-import com.how2java.tmall.pojo.ProductImage;
+import com.how2java.tmall.pojo.*;
+import com.how2java.tmall.service.OrderItemService;
 import com.how2java.tmall.service.ProductImageService;
 import com.how2java.tmall.service.ProductService;
+import com.how2java.tmall.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +22,10 @@ public class ProductServiceImpl implements ProductService {
     CategoryMapper categoryMapper;
     @Autowired
     ProductImageService productImageService;
+    @Autowired
+    OrderItemService orderItemService;
+    @Autowired
+    ReviewService reviewService;
 
     @Override
     public void add(Product product) {
@@ -43,6 +46,7 @@ public class ProductServiceImpl implements ProductService {
     public Product get(int id) {
         Product p = productMapper.selectByPrimaryKey(id);
         setCategory(p);
+        setFirstProductImage(p);
         return p;
     }
 
@@ -75,6 +79,7 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Override
     public void setFirstProductImage(List<Product> ps) {
         for(Product p : ps) {
             setFirstProductImage(p);
@@ -84,6 +89,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void fill(Category c) {
         List<Product> ps = list(c.getId());
+        setFirstProductImage(ps);
         c.setProducts(ps);
     }
 
@@ -107,6 +113,21 @@ public class ProductServiceImpl implements ProductService {
                 productsByRow.add(productsOfEachRow);
             }
             c.setProductsByRow(productsByRow);
+        }
+    }
+
+    @Override
+    public void setSaleAndReviewNumber(Product p) {
+        int saleCount = orderItemService.getSaleCount(p.getId());
+        p.setSaleCount(saleCount);
+        int reviewCount = reviewService.getCount(p.getId());
+        p.setReviewCount(reviewCount);
+    }
+
+    @Override
+    public void setSaleAndReviewNumber(List<Product> ps) {
+        for(Product p : ps) {
+            setSaleAndReviewNumber(p);
         }
     }
 }

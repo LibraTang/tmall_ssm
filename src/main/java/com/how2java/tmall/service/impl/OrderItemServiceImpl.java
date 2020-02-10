@@ -1,10 +1,7 @@
 package com.how2java.tmall.service.impl;
 
 import com.how2java.tmall.mapper.OrderItemMapper;
-import com.how2java.tmall.pojo.Order;
-import com.how2java.tmall.pojo.OrderItem;
-import com.how2java.tmall.pojo.OrderItemExample;
-import com.how2java.tmall.pojo.Product;
+import com.how2java.tmall.pojo.*;
 import com.how2java.tmall.service.OrderItemService;
 import com.how2java.tmall.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,5 +82,17 @@ public class OrderItemServiceImpl implements OrderItemService {
         for(OrderItem oi : ois) {
             setProduct(oi);
         }
+    }
+
+    @Override
+    public int getSaleCount(int pid) {
+        OrderItemExample example = new OrderItemExample();
+        example.createCriteria().andPidEqualTo(pid);
+        List<OrderItem> ois = orderItemMapper.selectByExample(example);
+        int result = 0;
+        for(OrderItem oi : ois) {
+            result += oi.getNumber();
+        }
+        return result;
     }
 }

@@ -12,7 +12,10 @@ public interface ProductService {
     Product get(int id);
     List<Product> list(int cid);
     void setFirstProductImage(Product p);
+    void setFirstProductImage(List<Product> ps);
     void fill(Category c);
     void fill(List<Category> cs);
     void fillByRow(List<Category> cs);
+    void setSaleAndReviewNumber(Product p);
+    void setSaleAndReviewNumber(List<Product> ps);
 }
