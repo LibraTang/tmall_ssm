@@ -9,6 +9,7 @@ import com.how2java.tmall.service.ProductService;
 import com.how2java.tmall.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -129,5 +130,17 @@ public class ProductServiceImpl implements ProductService {
         for(Product p : ps) {
             setSaleAndReviewNumber(p);
         }
+    }
+
+    @Override
+    public List<Product> search(String keyword) {
+        ProductExample example = new ProductExample();
+        example.createCriteria().andNameLike("%" + keyword + "%");
+        example.setOrderByClause("id DESC");
+
+        List<Product> ps = productMapper.selectByExample(example);
+        setFirstProductImage(ps);
+//        setCategory(ps);
+        return ps;
     }
 }
