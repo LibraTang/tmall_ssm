@@ -57,7 +57,7 @@ public class OrderItemServiceImpl implements OrderItemService {
     @Override
     public void fill(Order order) {
         OrderItemExample example = new OrderItemExample();
-        example.createCriteria().andIdEqualTo(order.getId());
+        example.createCriteria().andOidEqualTo(order.getId());
         example.setOrderByClause("id DESC");
         List<OrderItem> ois = orderItemMapper.selectByExample(example);
         setProduct(ois);
