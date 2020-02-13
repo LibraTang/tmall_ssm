@@ -44,7 +44,7 @@ public class OtherInterceptor extends HandlerInterceptorAdapter {
                 cartTotalItemNumber += oi.getNumber();
             }
         }
-        session.setAttribute("cartTotalNumber", cartTotalItemNumber);
+        session.setAttribute("cartTotalItemNumber", cartTotalItemNumber);
     }
 
     @Override
